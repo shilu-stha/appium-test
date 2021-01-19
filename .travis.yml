@@ -6,9 +6,9 @@ matrix:
       cache:
         directories:
           - node_modules
-      script: 
-        - yarn test
-        - yarn lint
+      # script: 
+        # - yarn test
+        # - yarn lint
 
     - language: android
       os: linux
