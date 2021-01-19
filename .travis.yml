@@ -6,8 +6,10 @@ matrix:
       cache:
         directories:
           - node_modules
-      # script: 
-        # - yarn test
+      ignore:
+        - test_project/
+      script: 
+        - yarn test
         # - yarn lint
 
     - language: android
@@ -35,7 +37,7 @@ matrix:
         - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
         - sudo apt-get update && sudo apt-get install yarn
         - cd android/app
-        - openssl aes-256-cbc -K android -iv android -in my-release-key.keystore.enc -out my-release-key.keystore -d
+        - openssl aes-256-cbc -K android -iv android -in keystore.jks -out keystore.jks -d
         - yes | sdkmanager "platforms;android-28"
         - cd ..
       install:
