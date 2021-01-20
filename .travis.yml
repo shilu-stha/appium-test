@@ -4,6 +4,10 @@ node_js:
 cache:
   directories:
     - node_modules
+branches:
+  only: 
+    - uat
+    - master
 before_script:
   - echo $BS_USERNAME
 script: 
