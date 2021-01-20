@@ -4,15 +4,6 @@ node_js:
 cache:
   directories:
   - node_modules
-branches:
-  only:
-  - uat
-  - master
-before_script:
-- echo $BS_USERNAME
-script:
-- yarn test
-- yarn testandroid-bs
 addons:
   browserstack:
     username: "$BS_USERNAME"
@@ -34,4 +25,6 @@ deploy:
   on:
     repo: shilu-stha/appium-test
     tags: true
-
+after_deploy: 
+- yarn test
+- yarn testandroid-bs
