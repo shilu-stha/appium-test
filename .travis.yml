@@ -15,6 +15,7 @@ matrix:
           username: 'devdev39'
           access_key: 'zXKZDJiV4JBVv8sZt4xo'
           app_path: android/app/release/app-release.apk
+          forcelocal: true
 
     # - language: android
     #   os: linux
