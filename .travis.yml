@@ -1,18 +1,18 @@
 language: node_js
-  node_js:
-    - node
-  cache:
-    directories:
-      - node_modules
-  addons:
-    browserstack:
-      username: "$BS_USERNAME"
-      access_key: "$BS_ACCESS_KEY"
-      app_path: android/app/release/app-release.apk
-      forcelocal: true
-  before_script:
-    - echo $BS_USERNAME
-    - echo $BS_ACCESS_KEY
-  script: 
-    - yarn test
-    - yarn testandroid-bs
+node_js:
+  - node
+cache:
+  directories:
+    - node_modules
+addons:
+  browserstack:
+    username: "$BS_USERNAME"
+    access_key: "$BS_ACCESS_KEY"
+    app_path: android/app/release/app-release.apk
+    forcelocal: true
+before_script:
+  - echo $BS_USERNAME
+  - echo $BS_ACCESS_KEY
+script: 
+  - yarn test
+  - yarn testandroid-bs
