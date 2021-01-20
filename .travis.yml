@@ -11,7 +11,7 @@ script:
   - yarn testandroid-bs
 addons:
   browserstack:
-    username: "$BS_USERNAME"
+    username: 'devdev39'
     access_key:
       secure: "ENKDulngeI72/7uaXKk5p/b6cRMh+qjWLEdzShTG9YlGlFPNmHzF4U3c0SQYZO/tv+Sg/PkPOCZGT3Zu5o1LzNSsLxqpnqGK0DqDj6QCM05PpYYz4Ik1FqPSRdRxq4baQ1rLhLFEOklHxJ4LF3u+AUxaJ/n2rXTd5fJWLT13zLWKjp4xsKMxYsfK8eytC5Gy0aGKUWwkyVhIoxFZGlWwX8yigz9zcHmiFCn5MHjL5vo3pZDx0B6yCsFK+h1mw7PYmI8IyastsiWNMxo/3BC7cYedkBRDjbGk4RlZWvurjpHEkE65tcxDdXzbow1M2uI55GK9sHViC3TEw9/66vrixgjklYvOj3nSqJDrn/AmHFYt34fwcEx/pFbpM4/jCXlzErVeWen5Cgj8uiSbO+Y5t6jOCiM7mEjMmu2ic8+zvznCqAXPvpL/6y0PCe6yZ3oRGLsoPfZLVIL3DHclEtnfbMP8lxDsXqe9dKzsIgnPlBhP7SdcetoXSwZaq1PMaZihXyelfdAu+860SiVa8EVaE4OTJEpuJPoPHKc/xi86iLkBuoC5KybAromju3gucKS9YJTydugrj9X/+HmdZGih8/5ZPF6NucwmqRdH/OyA3oIOOnAZpGXcNReiw7LQQDLlPfekUKIxF8WYTVlNvgyLOLUi3qI+5KlH2FtfxwuN73s="
     app_path: android/app/release/app-release.apk
