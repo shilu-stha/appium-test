@@ -21,14 +21,14 @@ addons:
 #   - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
 #   - git tag $TRAVIS_TAG
 #   - export RELEASE_NAME=$TRAVIS_BRANCH Release $TRAVIS_TAG
-deploy:
-  provider: releases
-    api_key: $GITHUB_TOKEN
-    file: android/app/release/app-release.apk
-    skip_cleanup: true
-    name: $RELEASE_NAME
-    # on:
-    #   all_branches: true
-    #   condition: $TRAVIS_BRANCH =~ ^(uat|master)$
-    on:
-      branch: uat
+# deploy:
+#   provider: releases
+#     api_key: $GITHUB_TOKEN
+#     file: android/app/release/app-release.apk
+#     skip_cleanup: true
+#     name: $RELEASE_NAME
+#     # on:
+#     #   all_branches: true
+#     #   condition: $TRAVIS_BRANCH =~ ^(uat|master)$
+#     on:
+#       branch: uat
