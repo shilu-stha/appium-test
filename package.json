@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "prepare-test": "cd test_project/ && yarn && ..",
-    "testandroid-bs": "npx wdio ./wdio.android.bs.app.conf.js"
+    "testandroid-bs": "npx wdio ./test_project/wdio.android.bs.app.conf.js"
   },
   "dependencies": {
     "react": "16.13.1",
@@ -34,5 +34,11 @@
     "metro-react-native-babel-preset": "^0.64.0",
     "react-test-renderer": "16.13.1",
     "webdriverio": "^6.12.0"
+  },
+  "jest": {
+    "preset": "react-native",
+    "testPathIgnorePatterns" : [
+      "test_project/" 
+    ]
   }
 }
