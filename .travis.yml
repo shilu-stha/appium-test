@@ -6,10 +6,10 @@ matrix:
       cache:
         directories:
           - node_modules
-      before_script:
-        - yarn prepare-test
-      script: 
-        - yarn test
+      # before_script:
+      #   - yarn prepare-test
+      # script: 
+      #   - yarn test
       addons:
         browserstack:
           username: 'devdev39'
