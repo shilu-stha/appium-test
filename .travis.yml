@@ -2,22 +2,19 @@ matrix:
   include:
     - language: node_js
       node_js:
-        - 14
+        - node
       cache:
         directories:
           - node_modules
-      ignore:
-        - /test_project/
-      # script: 
-      #   - yarn test
-        # - yarn lint
-# install:
-# - yarn
-addons:
-  browserstack:
-    username: 'devdev39'
-    access_key: 'zXKZDJiV4JBVv8sZt4xo'
-    app_path: android/app/release/app-release.apk
+      before_script:
+      - yarn prepare-test
+      script: 
+        - yarn test
+      addons:
+        browserstack:
+          username: 'devdev39'
+          access_key: 'zXKZDJiV4JBVv8sZt4xo'
+          app_path: android/app/release/app-release.apk
 
     # - language: android
     #   os: linux

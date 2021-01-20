@@ -8,7 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "prepare-test": "cd test/ && yarn && ..",
+    "prepare-test": "cd test_project/ && yarn && ..",
     "testandroid-bs": "npx wdio ./wdio.android.bs.app.conf.js"
   },
   "dependencies": {
