@@ -64,13 +64,6 @@
 # Parts of this script were originally taken from
 # http://docs.travis-ci.com/user/triggering-builds/
 
-
-if [ "$#" -lt 3 ] || [ "$#" -ge 7 ]; then
-  echo "Wrong number of arguments $# to trigger-travis.sh; run like:"
-  echo " trigger-travis.sh [--pro] [--branch main] FleetPanda driver-app-test-suite tDmUC5h45AYND9oRk8HLWg [Test trigger travis]" >&2
-  exit 1
-fi
-
 if [ "$1" = "--pro" ] ; then
   TRAVIS_URL=travis-ci.com
   shift
@@ -86,41 +79,95 @@ else
   BRANCH=master
 fi
 
+if [ "$1" = "-m" ] ; then
+  shift
+  MESSAGE="$1"
+  shift
+else
+  MESSAGE="Trigger Travis"
+fi
+
 USER=$1
 REPO=$2
 TOKEN=$3
-if [ $# -eq 4 ] ; then
-    MESSAGE=",\"message\": \"$4\""
-elif [ -n "$TRAVIS_REPO_SLUG" ] ; then
-    MESSAGE=",\"message\": \"Triggered by upstream build of $TRAVIS_REPO_SLUG commit "`git rev-parse --short HEAD`"\""
-else
-    MESSAGE=""
-fi
-## For debugging:
+
+echo "USER=$USER"
+echo "REPO=$REPO"
+echo "TOKEN=$TOKEN"
+echo "BRANCH=$BRANCH"
+echo "MESSAGE=$MESSAGE"
+
+body="{
+\"request\": {
+  \"branch\":\"$BRANCH\"
+  \"message\": \"$MESSAGE\"
+}}"
+
+curl -s -X POST \
+   -H "Content-Type: application/json" \
+   -H "Accept: application/json" \
+   -H "Travis-API-Version: 3" \
+   -H "Authorization: token ${TOKEN}" \
+  -d "$body" \
+  https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests
+#  | tee /travis-request-output.$$.txt
+
+# if [ "$#" -lt 3 ] || [ "$#" -ge 7 ]; then
+#   echo "Wrong number of arguments $# to trigger-travis.sh; run like:"
+#  echo " trigger-travis.sh [--pro] [--branch BRANCH] GITHUBID GITHUBPROJECT TRAVIS_ACCESS_TOKEN [MESSAGE]" >&2
+#   exit 1
+# fi
+
+# if [ "$1" = "--pro" ] ; then
+#   TRAVIS_URL=travis-ci.com
+#   shift
+# else
+#   TRAVIS_URL=travis-ci.org
+# fi
+
+# if [ "$1" = "--branch" ] ; then
+#   shift
+#   BRANCH="$1"
+#   shift
+# else
+#   BRANCH=master
+# fi
+
+# USER=$1
+# REPO=$2
+# TOKEN=$3
+# if [ $# -eq 4 ] ; then
+#     MESSAGE=",\"message\": \"$4\""
+# elif [ -n "$TRAVIS_REPO_SLUG" ] ; then
+#     MESSAGE=",\"message\": \"Triggered by upstream build of $TRAVIS_REPO_SLUG commit "`git rev-parse --short HEAD`"\""
+# else
+#     MESSAGE=""
+# fi
+# # For debugging:
 # echo "USER=$USER"
 # echo "REPO=$REPO"
 # echo "TOKEN=$TOKEN"
 # echo "MESSAGE=$MESSAGE"
 
-body="{
-\"request\": {
-  \"branch\":\"$BRANCH\"
-  $MESSAGE
-}}"
+# body="{
+# \"request\": {
+#   \"branch\":\"$BRANCH\"
+#   \"message\": \"$MESSAGE\"
+# }}"
 
-# It does not work to put / in place of %2F in the URL below.  I'm not sure why.
-curl -s -X POST \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json" \
-  -H "Travis-API-Version: 3" \
-  -H "Authorization: token ${TOKEN}" \
-  -d "$body" \
-  https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests \
- | tee /tmp/travis-request-output.$$.txt
+# # It does not work to put / in place of %2F in the URL below.  I'm not sure why.
+# curl -s -X POST \
+#   -H "Content-Type: application/json" \
+#   -H "Accept: application/json" \
+#   -H "Travis-API-Version: 3" \
+#   -H "Authorization: token ${TOKEN}" \
+#   -d "$body" \
+#   https://api.${TRAVIS_URL}/repo/${USER}%2F${REPO}/requests \
+#  | tee /tmp/travis-request-output.$$.txt
 
-if grep -q '"@type": "error"' /tmp/travis-request-output.$$.txt; then
-    exit 1
-fi
-if grep -q 'access denied' /tmp/travis-request-output.$$.txt; then
-    exit 1
-fi
+# if grep -q '"@type": "error"' /tmp/travis-request-output.$$.txt; then
+#     exit 1
+# fi
+# if grep -q 'access denied' /tmp/travis-request-output.$$.txt; then
+#     exit 1
+# fi
