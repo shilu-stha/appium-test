@@ -13,6 +13,11 @@ addons:
     forcelocal: true
 script:
 - yarn test
+branches:
+  only:
+  - master
+  - main
+  - uat
 deploy:
   provider: releases
   skip_cleanup: true
@@ -27,3 +32,16 @@ deploy:
 before_install:
 - openssl aes-256-cbc -K $encrypted_c80f59e584b7_key -iv $encrypted_c80f59e584b7_iv
   -in keystore.jks.enc -out keystore.jks -d
+after_deploy:
+  jobs:
+  include:
+    - stage: trigger downstream
+      jdk: oraclejdk8
+      script: |
+        echo "TRAVIS_BRANCH=$TRAVIS_BRANCH TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST"
+        if [[ ($TRAVIS_BRANCH == master) &&
+              ($TRAVIS_PULL_REQUEST == false) ]] ; then
+          curl -LO --retry 3 https://raw.github.com/mernst/plume-lib/master/bin/trigger-travis.sh
+          sh trigger-travis.sh FleetPanda driver-app-test-suite $TRAVIS_ACCESS_TOKEN
+        fi
+
