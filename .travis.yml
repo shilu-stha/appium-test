@@ -12,33 +12,18 @@ addons:
     app_path: android/app/release/app-release.apk
     forcelocal: true
 script:
-  - yarn test
-  - yarn testandroid-bs
-
-jobs:
-  include:
-    - stage: trigger downstream
-      jdk: oraclejdk8
-      script: |
-        echo "TRAVIS_BRANCH=$TRAVIS_BRANCH TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST"
-        if [[ ($TRAVIS_BRANCH == main) &&
-              ($TRAVIS_PULL_REQUEST == false) ]] ; then
-          curl -LO --retry 3 https://raw.github.com/mernst/plume-lib/master/bin/trigger-travis.sh
-          sh trigger-travis.sh main FleetPanda driver-app-test-suite $TRAVIS_ACCESS_TOKEN
-        fi
-# before_install:
-# - openssl aes-256-cbc -K $encrypted_fb6e24b4fb45_key -iv $encrypted_fb6e24b4fb45_iv -in keystore.jks.enc -out android\\app\\keystore.jks -d
-# deploy:
-#   provider: releases
-#   skip_cleanup: true
-#   overwrite: true
-#   api_key:
-#     secure: "pENefXUlEPOLuhv7MIQ/LPDQCdKxQaSNChh3g9j+Nzttvbvm+aYnBpvocnfZGB3uvovwUsSnpPI0S8x13YQrvNmYG0n84qsFBgVy33Ne7/+4H/Eb6U3HM1vyTtX6KU5ZkoVz3Cy3OCT6ieFZK+xuDKQQpuw4QmUCBNuUkYU23CPtgWyXX9kRPo0ViVHK4SGJMUxMVgqHSazqD3naqS6i7IDzPdgME/KnkE+HELXm0rA8tUvx1evDZbNnaLLwDMlJzxOWRf1oUMr8gI0hDNgFczZl478RxahACzB+R+4FSXrJNsYw8uZn3lqRFB4UMYiXdUMHQaCAJj+E4xxmDOj45aGHdpk+/oU+pz3SoKtazvjJSe1RRyOEwmhLauYDUKw5ZdWwmJuPB71+tW4ZYPAz40kCfU3pkpE7fnarbmlS1lygN8/e6/wLArsBFm6/XYXlt7to6Fb/e2b2p3PTWUmWEryfQgaEJhyjLus2ReVIS3qGJ2bVW4d8rqs3aSOWUS3i7+/GZgQ5XRxyw5KGNP0ds09tEcwzjSrG0laK8XilU05i1vrX17kwtivBXL0Q8J6z7LOUtqd+XT0YjAiMUuJ0647AyXLnqmrP2cPpqBdeOQQoyTY5m/guFQfKU18iw0rEsTGdRI2pCuoBBzgrudhxNPVDSsIC6Yt1O/aN1v8wkFY="
-#   file_glob: true
-#   file: /home/travis/build/shilu-stha/appium-test/android/app/release/*
-#   on:
-#     repo: shilu-stha/appium-test
-#     tags: true
-# after_deploy: 
-# - yarn test
-# - yarn testandroid-bs
+- yarn test
+deploy:
+  provider: releases
+  skip_cleanup: true
+  overwrite: true
+  api_key:
+    secure: pENefXUlEPOLuhv7MIQ/LPDQCdKxQaSNChh3g9j+Nzttvbvm+aYnBpvocnfZGB3uvovwUsSnpPI0S8x13YQrvNmYG0n84qsFBgVy33Ne7/+4H/Eb6U3HM1vyTtX6KU5ZkoVz3Cy3OCT6ieFZK+xuDKQQpuw4QmUCBNuUkYU23CPtgWyXX9kRPo0ViVHK4SGJMUxMVgqHSazqD3naqS6i7IDzPdgME/KnkE+HELXm0rA8tUvx1evDZbNnaLLwDMlJzxOWRf1oUMr8gI0hDNgFczZl478RxahACzB+R+4FSXrJNsYw8uZn3lqRFB4UMYiXdUMHQaCAJj+E4xxmDOj45aGHdpk+/oU+pz3SoKtazvjJSe1RRyOEwmhLauYDUKw5ZdWwmJuPB71+tW4ZYPAz40kCfU3pkpE7fnarbmlS1lygN8/e6/wLArsBFm6/XYXlt7to6Fb/e2b2p3PTWUmWEryfQgaEJhyjLus2ReVIS3qGJ2bVW4d8rqs3aSOWUS3i7+/GZgQ5XRxyw5KGNP0ds09tEcwzjSrG0laK8XilU05i1vrX17kwtivBXL0Q8J6z7LOUtqd+XT0YjAiMUuJ0647AyXLnqmrP2cPpqBdeOQQoyTY5m/guFQfKU18iw0rEsTGdRI2pCuoBBzgrudhxNPVDSsIC6Yt1O/aN1v8wkFY=
+  file_glob: true
+  file: "/home/travis/build/shilu-stha/appium-test/android/app/release/*"
+  on:
+    repo: shilu-stha/appium-test
+    tags: true
+before_install:
+- openssl aes-256-cbc -K $encrypted_c80f59e584b7_key -iv $encrypted_c80f59e584b7_iv
+  -in keystore.jks.enc -out keystore.jks -d
