@@ -1,3 +1,6 @@
+const dotenv = require('dotenv');
+dotenv.config();
+
 exports.config = {
     services: ['appium'],
     port: 4723,
@@ -11,7 +14,7 @@ exports.config = {
         platformName: 'Android',
         platformVersion: '11',
         deviceName: 'emulator-5554',
-        app: 'apps/app-debug.apk',
+        app: 'android/app/release/app-release.apk',
         automationName: 'UiAutomator2'
     }],
     logLevel: 'trace',
