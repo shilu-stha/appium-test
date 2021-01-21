@@ -1,18 +1,44 @@
 language: node_js
 node_js:
-  - node
+- node
 cache:
   directories:
-    - node_modules
-before_script:
-  - echo $BS_USERNAME
-script: 
-  - yarn test
-  - yarn testandroid-bs
+  - node_modules
 addons:
   browserstack:
     username: "$BS_USERNAME"
     access_key:
-      secure: "ULv6y6Y9n6gZSAhidPdmuOQmaiJeGyKej/PkMR89rmqCgRavO0lnhPl6yhYAaxMXu9iaCkuTAwccwriewwl5X4JEYjFOcl2bUhiZyfadW1FmTI1jMiUuBHLMJYcEFhO0TWNnhcLbalWjGlrToDIrHWm5eypS5DJNfCTflivxe8yId8ISLeogo/k9WNzd8UfgsRK5ZM6qFwHeTvSwUYKvvzFK4FNp9DtGazG6V1i3RZnNJsmNMXQ+29ycNQgcEscWoMezdGWG4hkjyroGXoiLYU9rpo1XrBdEN6pFW2kq5d/YbjPJbVw+RB1BBRXHlV9aUN4hexjKHP+VSGmFIc1Ah8BYnFn/Ck21Yh52O5zS0TfMdRg/r0tbYl9uMS6PDm3gBcDRSRHSfeVF4SJM9XqzUj5fjO7GJ3Bf1fb/WDPllkdUg7KwQKydQhd0yEVd3akXHZIDTu2QOdYT/iaz5Mp6JJtqG/mYVV6iavwHwUQi6D9z9WRyAyZ6uBGdZwBYgL4cCn7OsunbqdaD6dDzWq9S71WUhCNzy+JUbOAQtW28kC342upoYf2qI1enYX+DB7saBYDc101TJ6N2pWxTw5M/NRytIUSWvaGxRyEraZ9v6ECQrKoMWms5oHjIb3mlVsh/242A393P4vwCCYFPk1P/kTmC5ZEV1Pud4tbGIekbaS8="
+      secure: ULv6y6Y9n6gZSAhidPdmuOQmaiJeGyKej/PkMR89rmqCgRavO0lnhPl6yhYAaxMXu9iaCkuTAwccwriewwl5X4JEYjFOcl2bUhiZyfadW1FmTI1jMiUuBHLMJYcEFhO0TWNnhcLbalWjGlrToDIrHWm5eypS5DJNfCTflivxe8yId8ISLeogo/k9WNzd8UfgsRK5ZM6qFwHeTvSwUYKvvzFK4FNp9DtGazG6V1i3RZnNJsmNMXQ+29ycNQgcEscWoMezdGWG4hkjyroGXoiLYU9rpo1XrBdEN6pFW2kq5d/YbjPJbVw+RB1BBRXHlV9aUN4hexjKHP+VSGmFIc1Ah8BYnFn/Ck21Yh52O5zS0TfMdRg/r0tbYl9uMS6PDm3gBcDRSRHSfeVF4SJM9XqzUj5fjO7GJ3Bf1fb/WDPllkdUg7KwQKydQhd0yEVd3akXHZIDTu2QOdYT/iaz5Mp6JJtqG/mYVV6iavwHwUQi6D9z9WRyAyZ6uBGdZwBYgL4cCn7OsunbqdaD6dDzWq9S71WUhCNzy+JUbOAQtW28kC342upoYf2qI1enYX+DB7saBYDc101TJ6N2pWxTw5M/NRytIUSWvaGxRyEraZ9v6ECQrKoMWms5oHjIb3mlVsh/242A393P4vwCCYFPk1P/kTmC5ZEV1Pud4tbGIekbaS8=
     app_path: android/app/release/app-release.apk
     forcelocal: true
+script:
+  - yarn test
+  - yarn testandroid-bs
+
+jobs:
+  include:
+    - stage: trigger downstream
+      jdk: oraclejdk8
+      script: |
+        echo "TRAVIS_BRANCH=$TRAVIS_BRANCH TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST"
+        if [[ ($TRAVIS_BRANCH == main) &&
+              ($TRAVIS_PULL_REQUEST == false) ]] ; then
+          curl -LO --retry 3 https://raw.github.com/mernst/plume-lib/master/bin/trigger-travis.sh
+          sh trigger-travis.sh main FleetPanda driver-app-test-suite $TRAVIS_ACCESS_TOKEN
+        fi
+# before_install:
+# - openssl aes-256-cbc -K $encrypted_fb6e24b4fb45_key -iv $encrypted_fb6e24b4fb45_iv -in keystore.jks.enc -out android\\app\\keystore.jks -d
+# deploy:
+#   provider: releases
+#   skip_cleanup: true
+#   overwrite: true
+#   api_key:
+#     secure: "pENefXUlEPOLuhv7MIQ/LPDQCdKxQaSNChh3g9j+Nzttvbvm+aYnBpvocnfZGB3uvovwUsSnpPI0S8x13YQrvNmYG0n84qsFBgVy33Ne7/+4H/Eb6U3HM1vyTtX6KU5ZkoVz3Cy3OCT6ieFZK+xuDKQQpuw4QmUCBNuUkYU23CPtgWyXX9kRPo0ViVHK4SGJMUxMVgqHSazqD3naqS6i7IDzPdgME/KnkE+HELXm0rA8tUvx1evDZbNnaLLwDMlJzxOWRf1oUMr8gI0hDNgFczZl478RxahACzB+R+4FSXrJNsYw8uZn3lqRFB4UMYiXdUMHQaCAJj+E4xxmDOj45aGHdpk+/oU+pz3SoKtazvjJSe1RRyOEwmhLauYDUKw5ZdWwmJuPB71+tW4ZYPAz40kCfU3pkpE7fnarbmlS1lygN8/e6/wLArsBFm6/XYXlt7to6Fb/e2b2p3PTWUmWEryfQgaEJhyjLus2ReVIS3qGJ2bVW4d8rqs3aSOWUS3i7+/GZgQ5XRxyw5KGNP0ds09tEcwzjSrG0laK8XilU05i1vrX17kwtivBXL0Q8J6z7LOUtqd+XT0YjAiMUuJ0647AyXLnqmrP2cPpqBdeOQQoyTY5m/guFQfKU18iw0rEsTGdRI2pCuoBBzgrudhxNPVDSsIC6Yt1O/aN1v8wkFY="
+#   file_glob: true
+#   file: /home/travis/build/shilu-stha/appium-test/android/app/release/*
+#   on:
+#     repo: shilu-stha/appium-test
+#     tags: true
+# after_deploy: 
+# - yarn test
+# - yarn testandroid-bs

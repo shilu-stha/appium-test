@@ -9,6 +9,7 @@
     "test": "jest",
     "lint": "eslint .",
     "prepare-test": "cd test_project/ && yarn && ..",
+    "testandroid": "npx wdio ./test_project/wdio.conf.js",
     "testandroid-bs": "npx wdio ./test_project/wdio.android.bs.app.conf.js"
   },
   "dependencies": {
@@ -29,6 +30,7 @@
     "@wdio/sync": "^6.11.0",
     "babel-jest": "^26.6.3",
     "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
     "eslint": "^7.18.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.64.0",
@@ -37,8 +39,8 @@
   },
   "jest": {
     "preset": "react-native",
-    "testPathIgnorePatterns" : [
-      "test_project/" 
+    "testPathIgnorePatterns": [
+      "test_project/"
     ]
   }
 }

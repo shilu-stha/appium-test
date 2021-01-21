@@ -1,9 +1,11 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const { config } = require('./wdio.conf');
 
 config.capabilities = [
     {
         'browserstack.debug': true,
-        app: process.env.BROWSERSTACK_APP_ID || 'bs://aa683dbafe4a4238d6566b4671fd0e61ec95eb78',
+        app: process.env.BS_APP_ID,
         device: 'Google Pixel 3',
         os_version: '9.0',
         project: 'driver-app-test-project',
@@ -15,8 +17,8 @@ config.capabilities = [
 // =============================
 // Browserstack specific config
 // =============================
-config.user = process.env.BROWSERSTACK_USER || 'devdev39';
-config.key = process.env.BROWSERSTACK_ACCESS_KEY || 'zXKZDJiV4JBVv8sZt4xo';
+config.user = process.env.BS_USERNAME;
+config.key = process.env.BS_ACCESS_KEY;
 config.services = ['browserstack'];
 
 // This port was defined in the `wdio.shared.conf.js`
