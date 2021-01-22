@@ -76,7 +76,7 @@ if [ "$1" = "--branch" ] ; then
   BRANCH="$1"
   shift
 else
-  BRANCH=master
+  BRANCH=main
 fi
 
 if [ "$1" = "-m" ] ; then
