@@ -4,15 +4,18 @@ node_js:
 cache:
   directories:
   - node_modules
-addons:
-  browserstack:
-    username: "$BS_USERNAME"
-    access_key:
-      secure: ULv6y6Y9n6gZSAhidPdmuOQmaiJeGyKej/PkMR89rmqCgRavO0lnhPl6yhYAaxMXu9iaCkuTAwccwriewwl5X4JEYjFOcl2bUhiZyfadW1FmTI1jMiUuBHLMJYcEFhO0TWNnhcLbalWjGlrToDIrHWm5eypS5DJNfCTflivxe8yId8ISLeogo/k9WNzd8UfgsRK5ZM6qFwHeTvSwUYKvvzFK4FNp9DtGazG6V1i3RZnNJsmNMXQ+29ycNQgcEscWoMezdGWG4hkjyroGXoiLYU9rpo1XrBdEN6pFW2kq5d/YbjPJbVw+RB1BBRXHlV9aUN4hexjKHP+VSGmFIc1Ah8BYnFn/Ck21Yh52O5zS0TfMdRg/r0tbYl9uMS6PDm3gBcDRSRHSfeVF4SJM9XqzUj5fjO7GJ3Bf1fb/WDPllkdUg7KwQKydQhd0yEVd3akXHZIDTu2QOdYT/iaz5Mp6JJtqG/mYVV6iavwHwUQi6D9z9WRyAyZ6uBGdZwBYgL4cCn7OsunbqdaD6dDzWq9S71WUhCNzy+JUbOAQtW28kC342upoYf2qI1enYX+DB7saBYDc101TJ6N2pWxTw5M/NRytIUSWvaGxRyEraZ9v6ECQrKoMWms5oHjIb3mlVsh/242A393P4vwCCYFPk1P/kTmC5ZEV1Pud4tbGIekbaS8=
-    app_path: android/app/release/app-release.apk
-    forcelocal: true
+# addons:
+#   browserstack:
+#     username: "$BS_USERNAME"
+#     access_key:
+#       secure: ULv6y6Y9n6gZSAhidPdmuOQmaiJeGyKej/PkMR89rmqCgRavO0lnhPl6yhYAaxMXu9iaCkuTAwccwriewwl5X4JEYjFOcl2bUhiZyfadW1FmTI1jMiUuBHLMJYcEFhO0TWNnhcLbalWjGlrToDIrHWm5eypS5DJNfCTflivxe8yId8ISLeogo/k9WNzd8UfgsRK5ZM6qFwHeTvSwUYKvvzFK4FNp9DtGazG6V1i3RZnNJsmNMXQ+29ycNQgcEscWoMezdGWG4hkjyroGXoiLYU9rpo1XrBdEN6pFW2kq5d/YbjPJbVw+RB1BBRXHlV9aUN4hexjKHP+VSGmFIc1Ah8BYnFn/Ck21Yh52O5zS0TfMdRg/r0tbYl9uMS6PDm3gBcDRSRHSfeVF4SJM9XqzUj5fjO7GJ3Bf1fb/WDPllkdUg7KwQKydQhd0yEVd3akXHZIDTu2QOdYT/iaz5Mp6JJtqG/mYVV6iavwHwUQi6D9z9WRyAyZ6uBGdZwBYgL4cCn7OsunbqdaD6dDzWq9S71WUhCNzy+JUbOAQtW28kC342upoYf2qI1enYX+DB7saBYDc101TJ6N2pWxTw5M/NRytIUSWvaGxRyEraZ9v6ECQrKoMWms5oHjIb3mlVsh/242A393P4vwCCYFPk1P/kTmC5ZEV1Pud4tbGIekbaS8=
+#     app_path: android/app/release/app-release.apk
+#     forcelocal: true
 script:
 - yarn test
+before_install:
+- openssl aes-256-cbc -K $encrypted_c80f59e584b7_key -iv $encrypted_c80f59e584b7_iv
+  -in keystore.jks.enc -out keystore.jks -d
 deploy:
   provider: releases
   skip_cleanup: true
@@ -22,8 +25,6 @@ deploy:
   file_glob: true
   file: "/home/travis/build/shilu-stha/appium-test/android/app/release/*"
   on:
+    all_branches: true
     repo: shilu-stha/appium-test
-    tags: true
-before_install:
-- openssl aes-256-cbc -K $encrypted_c80f59e584b7_key -iv $encrypted_c80f59e584b7_iv
-  -in keystore.jks.enc -out keystore.jks -d
+    # tags: true
